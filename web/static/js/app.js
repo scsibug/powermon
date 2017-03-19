@@ -6,9 +6,9 @@ var gauge = c3.generate({
     },
     gauge: {
       min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
-      max: 60, // 100 is default
+      max: 35, // 100 is default
       units: ' KWh',
-      width: 39, // for adjusting arc thickness
+      width: 100, // for adjusting arc thickness
       expand: true,
       label: {
           format: function (value, ratio) {
@@ -17,11 +17,11 @@ var gauge = c3.generate({
       }
     },
     color: {
-        pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+        pattern: ['#60B044', '#F6C600','#F97600','#FF0000'], // the three color levels for the percentage values.
         threshold: {
             unit: 'KWh', // percentage is default
-            max: 60, // 100 is default
-            values: [14, 20, 50]
+            max: 35, // 100 is default
+            values: [20, 25, 30]
         }
     },
     size: {
