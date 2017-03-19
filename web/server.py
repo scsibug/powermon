@@ -4,6 +4,7 @@ import psycopg2
 from settings import *
 
 conn = psycopg2.connect(pg_conn_str)
+conn.set_session(autocommit=True)
 
 
 home_query_SQL = "select to_char(date_trunc('second',sample_time at time zone 'CDT'),'YYYY-MM-DD HH24:MI:SS'), watts from today_10m_usage where meter_id=30"
