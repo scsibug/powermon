@@ -41,7 +41,7 @@ while True:
     else:
         meter_id = found_meter[0]
     curs.execute(insert_reading_SQL, {'reading':msg["Consumption"], 'tstamp':tstamp, 'meter_id':meter_id, 'reader_name':msg["Sender"]})
-    conn.commit()
     # If message successfully processed, delete
+    conn.commit()
     message.delete()
     
