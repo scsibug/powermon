@@ -7,7 +7,7 @@ conn = psycopg2.connect(pg_conn_str)
 conn.set_session(autocommit=True)
 
 
-home_query_SQL = "select to_char(date_trunc('second',sample_time at time zone 'CDT'),'YYYY-MM-DD HH24:MI:SS'), watts from today_10m_usage where meter_id=30"
+home_query_SQL = "select to_char(date_trunc('second',sample_time at time zone 'CDT'),'YYYY-MM-DD HH24:MI:SS'), watts from today_30m_usage where meter_id=30"
 last_day_SQL = "select daily_usage from last_day_usage"
 my_last_month_SQL = "select monthly_usage from last_month_usage where meter_id=30"
 last_month_SQL = "select meter_id, monthly_usage from last_month_usage"

@@ -69,6 +69,16 @@ CREATE VIEW today_10m_usage AS
           ORDER BY round(date_part('epoch'::text, sample_view.tstamp) / (60 * 10)::double precision) DESC) counts
   WHERE counts.sample_count > 5 AND counts.watt_hours > 0;
 
+CREATE VIEW today_30m_usage AS
+ SELECT counts.meter_id, counts.sample_count, counts.sample_time, round((counts.watt_hours::double precision / counts.hours)::numeric, 1) AS watts
+   FROM ( SELECT sample_view.meter_id, min(sample_view.tstamp) + (max(sample_view.tstamp) - min(sample_view.tstamp)) AS sample_time, count(*) AS sample_count, 10 * (max(sample_view.consumption) - min(sample_view.consumption)) AS watt_hours, date_part('epoch'::text, max(sample_view.tstamp) - min(sample_view.tstamp)) / 3600::double precision AS hours, round(date_part('epoch'::text, sample_view.tstamp) / (60 * 30)::double precision) AS rounded_tstamp
+           FROM sample_view
+          WHERE sample_view.tstamp > (now() - '24:00:00'::interval)
+          GROUP BY round(date_part('epoch'::text, sample_view.tstamp) / (60 * 30)::double precision), sample_view.meter_id
+          ORDER BY round(date_part('epoch'::text, sample_view.tstamp) / (60 * 30)::double precision) DESC) counts
+  WHERE counts.sample_count > 5 AND counts.watt_hours > 0;
+
+
 CREATE VIEW last_day_usage AS
 SELECT round((max(sample_view.consumption) - min(sample_view.consumption))::numeric / 100.0, 1) AS daily_usage
    FROM sample_view
