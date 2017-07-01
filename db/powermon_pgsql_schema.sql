@@ -34,10 +34,19 @@ CREATE VIEW sample_view AS
   WHERE m.id = s.meter AND s.reader = r.id AND (m.type = ANY (ARRAY[4, 5, 7, 8]))
   ORDER BY timezone('UTC'::text, s.tstamp) DESC;
 
-CREATE VIEW last_month_usage AS
- SELECT round((max(sample_view.consumption) - min(sample_view.consumption))::numeric / 100.0, 1) AS daily_usage
+CREATE VIEW my_last_month_usage AS
+ SELECT round((max(sample_view.consumption) - min(sample_view.consumption))::numeric / 100.0, 1) AS monthly_usage
    FROM sample_view
   WHERE sample_view.meter_id = 30 AND sample_view.tstamp > (now() - '720:00:00'::interval);
+  
+CREATE VIEW last_month_usage AS 
+ SELECT * FROM (
+  SELECT meter_id, round((max(sample_view.consumption) - min(sample_view.consumption))::numeric / 100.0, 1) AS monthly_usage
+   FROM sample_view
+   WHERE sample_view.tstamp > (now() - '720:00:00'::interval)
+   GROUP BY meter_id
+   ORDER BY monthly_usage ASC) m
+ WHERE monthly_usage > 3;
 
 CREATE VIEW lifetime_mean_wattage AS
  SELECT a.meter_id, round(avg(a.watts)::numeric, 1) AS mean_watts
