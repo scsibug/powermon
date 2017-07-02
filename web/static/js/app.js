@@ -60,8 +60,8 @@ var gauge = c3.generate({
     }
     });
 
-
 var chart = c3.generate({
+  bindto: d3.select('#daily-chart'),
   data: {
     url: '/powermon/api/home-report',
     x: 'sample_time',
@@ -77,3 +77,19 @@ var chart = c3.generate({
   }
 });
 
+var my_monthly_chart = c3.generate({
+  bindto: d3.select('#monthly-chart'),
+  data: {
+    url: '/powermon/api/my-last-month-history',
+    x: 'sample_time',
+    xFormat: '%Y-%m-%d %H:%M:%S'
+  },
+  axis: {
+    x: {
+      type: 'timeseries',
+      tick: {
+        format: '%m-%d'
+      }
+    }
+  }
+});

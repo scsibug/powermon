@@ -1,0 +1,10 @@
+.daily-chart {
+  max-height: none !important;
+}
+.monthly-chart {
+  max-height: none !important;
+}
+
+h1 {
+    text-align: center;
+}
