@@ -28,6 +28,6 @@ while True:
     queue.send_message(MessageBody=json.dumps(send_data))
   except:
     eprint("Failed to send message to SQS", sys.exc_info()[0])
-    f.write(send_data)
+    f.write(json.dumps(send_data))
   # If connection is down; the script crashes.
   # Write to a local file, and upon restart, send all of those messages first (sqlite?)
